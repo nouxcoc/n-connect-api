@@ -31,7 +31,7 @@ router.post('/login', function (req, res) {
     });
 
     // return the information including token as JSON
-    res.status(200).send({ auth: true, token: token });
+    res.status(200).send({ auth: true, token: token, user : user });
   });
 
 });

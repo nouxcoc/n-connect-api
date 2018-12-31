@@ -2,11 +2,11 @@ const express = require('express');
 var router = express.Router();
 var ObjectId = require('mongoose').Types.ObjectId;
 
-var { Employee } = require('../models/employee');
+var { Message } = require('../models/message');
 
-// GET : localhost:3000/employees/
+// GET : localhost:3000/discussion/
 router.get('/', (req, res) => {
-    Employee.find((err, docs) => {
+    Message.find((err, docs) => {
         if (!err) { res.send(docs); }
         else {
             console.log('Error in Retrieving  : ' + JSON.stringify(err, undefined, 2));
@@ -14,11 +14,11 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET : localhost:3000/employees/_id
+// GET : localhost:3000/questions/_id
 router.get('/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
-    Employee.findById(req.params.id, (err, doc) => {
+    Message.findById(req.params.id, (err, doc) => {
         if (!err) { res.send(doc); }
         else {
             console.log('Error in Retrieving Employee  : ' + JSON.stringify(err, undefined, 2));
@@ -26,16 +26,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST : localhost:3000/employees/
+// POST : localhost:3000/questions/
 router.post('/', (req, res) => {
-    var emp = new Employee({
-        name: req.body.name,
-        position: req.body.position,
-        office: req.body.office,
-        salary: req.body.salary
+    var message = new Message({
+        msg: req.body.msg,
+        user: req.body.user,
+        time: req.body.time,
     });
-    emp.save((err, doc) => {
-        if (!err) { res.send(doc); }
+    message.save((err, doc) => {
+        if (!err) {
+            res.send(doc);
+        }
         else {
             console.log('Error in Employee Save  : ' + JSON.stringify(err, undefined, 2));
         }
@@ -44,19 +45,18 @@ router.post('/', (req, res) => {
 });
 
 
-//  PUT : localhost:3000/employees/_id
+//  PUT : localhost:3000/questions/_id
 router.put('/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
-    var emp = {
-        name: req.body.name,
-        position: req.body.position,
-        office: req.body.office,
-        salary: req.body.salary
+    var message = {
+        msg: req.body.msg,
+        user: req.body.user,
+        time: req.body.time,
     };
 
-    Employee.findByIdAndUpdate(req.params.id, { $set: emp }, { new: true }, (err, doc) => {
+    Message.findByIdAndUpdate(req.params.id, { $set: message }, { new: true }, (err, doc) => {
         if (!err) { res.send(doc); }
         else {
             console.log('Error in Employee Update  : ' + JSON.stringify(err, undefined, 2));
@@ -64,12 +64,12 @@ router.put('/:id', (req, res) => {
     });
 });
 
-//  DELETE : localhost:3000/employees/_id
-router.delete('/:id', () => {
+//  DELETE : localhost:3000/questions/_id
+router.delete('/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
 
-    Employee.findByIdAndRemove(req.params.id, (err, doc) => {
+    Message.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) { res.send(doc); }
         else {
             console.log('Error in Employee Delete  : ' + JSON.stringify(err, undefined, 2));

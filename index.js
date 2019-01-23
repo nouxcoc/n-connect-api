@@ -10,6 +10,8 @@ var questionController = require('./controllers/questionController');
 var authController = require('./auth/authController');
 var userController = require('./user/userController');
 var messageController = require('./controllers/messageController');
+var todoListController = require('./controllers/todoController');
+var notesController = require('./controllers/notesController');
 
 var app = express();
 app.use(bodyParser.json());
@@ -19,11 +21,11 @@ var server = app.listen(3000, () => console.log('Server started at port : 3000')
 var io = require('socket.io').listen(server);
 
 io.on("connection", socket => {
-    socket.on('message', function(msg){
-        setTimeout(()=> socket.broadcast.emit("ChatUpdate", msg), 100);
-      });
-    socket.on("disconnect", () => console.log("Client disconnected"));
+  socket.on('message', function (msg) {
+    setTimeout(() => socket.broadcast.emit("ChatUpdate", msg), 100);
   });
+  socket.on("disconnect", () => console.log("Client disconnected"));
+});
 //   const getApiAndEmit = async socket => {
 //     try {
 //       const res = await axios.get(
@@ -40,6 +42,8 @@ app.use('/questions', questionController);
 app.use('/auth', authController);
 app.use('/users', userController);
 app.use('/messages', messageController);
+app.use('/todolist', todoListController);
+app.use('/notes', notesController);
 
 module.exports = app;
 

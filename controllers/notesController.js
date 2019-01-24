@@ -6,11 +6,10 @@ var { Note } = require('../models/note');
 
 // GET : localhost:3000/notes/userid
 router.get('/:userId', (req, res) => {
-    console.log(req.params.userId);
     if (!ObjectId.isValid(req.params.userId))
         return res.status(400).send(`No record with given id : ${req.params.userId}`);
     Note.find({ userId: req.params.userId }, (err, doc) => {
-        if (!err) { console.log(doc); res.send(doc); }
+        if (!err) { res.send(doc); }
         else {
             console.log('Error in Retrieving Note List  : ' + JSON.stringify(err, undefined, 2));
         }
@@ -25,7 +24,7 @@ router.post('/', (req, res) => {
         createdOn: req.body.createdOn,
         updatedOn: req.body.updatedOn,
         type: req.body.type,
-        active: req.body.active,
+        label: req.body.label,
         userId: req.body.userId,
     });
     note.save((err, doc) => {
@@ -49,7 +48,7 @@ router.put('/:id', (req, res) => {
         createdOn: req.body.createdOn,
         updatedOn: req.body.updatedOn,
         type: req.body.type,
-        active: req.body.active,
+        label: req.body.label,
         userId: req.body.userId,
     };
 

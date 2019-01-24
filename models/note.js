@@ -6,7 +6,7 @@ var Note = mongoose.model('Note', {
     createdOn: { type: String },
     updatedOn: { type: String },
     type: { type: String },
-    active: { type: Boolean },
+    label: { type: String },
     userId: { type: String },
 });
 

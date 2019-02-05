@@ -16,7 +16,7 @@ var projectsController = require('./controllers/projectsController');
 
 var app = express();
 app.use(bodyParser.json());
-app.use(cors({ origin: 'https://n-connect.herokuapp.com/' }));
+app.use(cors({ origin: '*' }));
 
 var server = app.listen(process.env.PORT || 3000, () => console.log('Server started at port : 3000'));
 var io = require('socket.io').listen(server);
